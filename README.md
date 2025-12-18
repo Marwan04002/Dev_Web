@@ -77,3 +77,4 @@ L'application est développée uniquement en **HTML5**, **CSS3** et **JavaScript
 4. Naviguer entre les sections via le menu à gauche
 5. Cliquer sur **Déconnexion** pour retourner à la page de login
 
+
