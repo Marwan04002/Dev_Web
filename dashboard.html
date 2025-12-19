@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+
+<body>
+    <div class="sidebar">
+        <h2>Backoffice</h2>
+        <ul>
+            <li onclick="showSection('home')">Dashboard</li>
+            <li onclick="showSection('students')">Étudiants</li>
+            <li onclick="showSection('teachers')">Enseignants</li>
+            <li onclick="showSection('courses')">Cours</li>
+            <li onclick="showSection('classrooms')">Salles</li>
+            <li onclick="showSection('grades')">Notes / Examens</li>
+            <li><button class="logout" onclick="logout()">Déconnexion</button></li>
+        </ul>
+    </div>
+
+    <div class="content">
+        <!-- DASHBOARD -->
+        <div id="home" class="section active">
+            <h1>Dashboard</h1>
+            <div class="cards">
+                <div class="card">
+                    <h3>Étudiants</h3><span>50</span></div>
+                <div class="card">
+                    <h3>Enseignants</h3><span>5</span></div>
+                <div class="card">
+                    <h3>Cours</h3><span>26</span></div>
+                <div class="card">
+                    <h3>Salles</h3><span>5</span></div>
+            </div>
+        </div>
+
+        <!-- TABLES -->
+        <div id="students" class="section">
+            <h1>Gestion des Étudiants – Classe 3IIR</h1>
+            <div id="studentsTable"></div>
+        </div>
+        <div id="teachers" class="section">
+            <h1>Gestion des Enseignants</h1>
+            <div id="teachersTable"></div>
+        </div>
+        <div id="courses" class="section">
+            <h1>Gestion des Cours</h1>
+            <div id="coursesTable"></div>
+        </div>
+        <div id="classrooms" class="section">
+            <h1>Gestion des Salles</h1>
+            <div id="classroomsTable"></div>
+        </div>
+        <div id="grades" class="section">
+            <h1>Notes / Examens</h1>
+            <p>Gestion des notes et examens</p>
+        </div>
+        <div id="details" class="section">
+            <h1>Détails de l'entité</h1>
+            <p>Rapport détaillé de l’élément sélectionné</p><button onclick="backToPrevious()">Retour</button></div>
+    </div>
+
+</body>
+
+</html>
