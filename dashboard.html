@@ -270,10 +270,412 @@
             <h1>Détails de l'entité</h1>
             <p>Rapport détaillé de l’élément sélectionné</p><button onclick="backToPrevious()">Retour</button></div>
     </div>
+<script>
+        // Données
+        const students = [{
+            id: 1,
+            nom: "El Amrani",
+            prenom: "Youssef",
+            classe: "3IIR"
+        }, {
+            id: 2,
+            nom: "Bennani",
+            prenom: "Salma",
+            classe: "3IIR"
+        }, {
+            id: 3,
+            nom: "Haddad",
+            prenom: "Omar",
+            classe: "3IIR"
+        }, {
+            id: 4,
+            nom: "El Fassi",
+            prenom: "Imane",
+            classe: "3IIR"
+        }, {
+            id: 5,
+            nom: "Chakir",
+            prenom: "Anas",
+            classe: "3IIR"
+        }, {
+            id: 6,
+            nom: "Safi",
+            prenom: "Aya",
+            classe: "3IIR"
+        }, {
+            id: 7,
+            nom: "Khalfi",
+            prenom: "Amine",
+            classe: "3IIR"
+        }, {
+            id: 8,
+            nom: "Zahraoui",
+            prenom: "Sara",
+            classe: "3IIR"
+        }, {
+            id: 9,
+            nom: "El Ouardi",
+            prenom: "Yassine",
+            classe: "3IIR"
+        }, {
+            id: 10,
+            nom: "Jridi",
+            prenom: "Rania",
+            classe: "3IIR"
+        }, {
+            id: 11,
+            nom: "Fassi",
+            prenom: "Karim",
+            classe: "3IIR"
+        }, {
+            id: 12,
+            nom: "Bouazza",
+            prenom: "Leila",
+            classe: "3IIR"
+        }, {
+            id: 13,
+            nom: "Hajji",
+            prenom: "Adam",
+            classe: "3IIR"
+        }, {
+            id: 14,
+            nom: "Amrani",
+            prenom: "Nadia",
+            classe: "3IIR"
+        }, {
+            id: 15,
+            nom: "Rahmani",
+            prenom: "Othmane",
+            classe: "3IIR"
+        }, {
+            id: 16,
+            nom: "Mouhoub",
+            prenom: "Imane",
+            classe: "3IIR"
+        }, {
+            id: 17,
+            nom: "Rifi",
+            prenom: "Sami",
+            classe: "3IIR"
+        }, {
+            id: 18,
+            nom: "Bouziane",
+            prenom: "Salma",
+            classe: "3IIR"
+        }, {
+            id: 19,
+            nom: "Choukrallah",
+            prenom: "Youssef",
+            classe: "3IIR"
+        }, {
+            id: 20,
+            nom: "El Ghazali",
+            prenom: "Rania",
+            classe: "3IIR"
+        }, {
+            id: 21,
+            nom: "Bahja",
+            prenom: "Omar",
+            classe: "3IIR"
+        }, {
+            id: 22,
+            nom: "Kabbaj",
+            prenom: "Aya",
+            classe: "3IIR"
+        }, {
+            id: 23,
+            nom: "Ouahbi",
+            prenom: "Amine",
+            classe: "3IIR"
+        }, {
+            id: 24,
+            nom: "El Hachimi",
+            prenom: "Sara",
+            classe: "3IIR"
+        }, {
+            id: 25,
+            nom: "Tazi",
+            prenom: "Yassine",
+            classe: "3IIR"
+        }, {
+            id: 26,
+            nom: "El Fihri",
+            prenom: "Rania",
+            classe: "3IIR"
+        }, {
+            id: 27,
+            nom: "Bennani",
+            prenom: "Karim",
+            classe: "3IIR"
+        }, {
+            id: 28,
+            nom: "El Yacoubi",
+            prenom: "Leila",
+            classe: "3IIR"
+        }, {
+            id: 29,
+            nom: "Hammoudi",
+            prenom: "Adam",
+            classe: "3IIR"
+        }, {
+            id: 30,
+            nom: "El Idrissi",
+            prenom: "Nadia",
+            classe: "3IIR"
+        }, {
+            id: 31,
+            nom: "Rahali",
+            prenom: "Othmane",
+            classe: "3IIR"
+        }, {
+            id: 32,
+            nom: "Bourouaa",
+            prenom: "Imane",
+            classe: "3IIR"
+        }, {
+            id: 33,
+            nom: "El Mansouri",
+            prenom: "Sami",
+            classe: "3IIR"
+        }, {
+            id: 34,
+            nom: "Tahar",
+            prenom: "Salma",
+            classe: "3IIR"
+        }, {
+            id: 35,
+            nom: "El Kabbaj",
+            prenom: "Youssef",
+            classe: "3IIR"
+        }, {
+            id: 36,
+            nom: "Mouline",
+            prenom: "Rania",
+            classe: "3IIR"
+        }, {
+            id: 37,
+            nom: "Bouzid",
+            prenom: "Omar",
+            classe: "3IIR"
+        }, {
+            id: 38,
+            nom: "El Joundi",
+            prenom: "Aya",
+            classe: "3IIR"
+        }, {
+            id: 39,
+            nom: "El Ouafi",
+            prenom: "Amine",
+            classe: "3IIR"
+        }, {
+            id: 40,
+            nom: "Kherfi",
+            prenom: "Sara",
+            classe: "3IIR"
+        }, {
+            id: 41,
+            nom: "El Hachimi",
+            prenom: "Yassine",
+            classe: "3IIR"
+        }, {
+            id: 42,
+            nom: "Benzakour",
+            prenom: "Rania",
+            classe: "3IIR"
+        }, {
+            id: 43,
+            nom: "El Morabit",
+            prenom: "Karim",
+            classe: "3IIR"
+        }, {
+            id: 44,
+            nom: "Boukhari",
+            prenom: "Leila",
+            classe: "3IIR"
+        }, {
+            id: 45,
+            nom: "Hajji",
+            prenom: "Adam",
+            classe: "3IIR"
+        }, {
+            id: 46,
+            nom: "El Amrani",
+            prenom: "Nadia",
+            classe: "3IIR"
+        }, {
+            id: 47,
+            nom: "Rahmani",
+            prenom: "Othmane",
+            classe: "3IIR"
+        }, {
+            id: 48,
+            nom: "Mouhoub",
+            prenom: "Imane",
+            classe: "3IIR"
+        }, {
+            id: 49,
+            nom: "Rifi",
+            prenom: "Sami",
+            classe: "3IIR"
+        }, {
+            id: 50,
+            nom: "Bouziane",
+            prenom: "Salma",
+            classe: "3IIR"
+        }];
 
+        const teachers = [{
+            id: 1,
+            nom: "El Idrissi",
+            prenom: "Mohamed",
+            matiere: "Langues"
+        }, {
+            id: 2,
+            nom: "Bouazza",
+            prenom: "Karima",
+            matiere: "Linux"
+        }, {
+            id: 3,
+            nom: "Hajji",
+            prenom: "Yassine",
+            matiere: "Développement Web"
+        }, {
+            id: 4,
+            nom: "Amrani",
+            prenom: "Nadia",
+            matiere: "C++"
+        }, {
+            id: 5,
+            nom: "Rahmani",
+            prenom: "Othmane",
+            matiere: "Réseaux"
+        }];
+
+
+        const courses = [{
+            id: 1,
+            intitule: "Anglais Technique",
+            matiere: "Langues",
+            enseignant: "Mohamed El Idrissi",
+            classe: "3IIR"
+        }, {
+            id: 2,
+            intitule: "Expression Française",
+            matiere: "Langues",
+            enseignant: "Mohamed El Idrissi",
+            classe: "3IIR"
+        }, {
+            id: 3,
+            intitule: "Administration Linux",
+            matiere: "Linux",
+            enseignant: "Karima Bouazza",
+            classe: "3IIR"
+        }, {
+            id: 4,
+            intitule: "Développement Web Front",
+            matiere: "Web",
+            enseignant: "Yassine Hajji",
+            classe: "3IIR"
+        }, {
+            id: 5,
+            intitule: "Développement Web Back",
+            matiere: "Web",
+            enseignant: "Yassine Hajji",
+            classe: "3IIR"
+        }, {
+            id: 6,
+            intitule: "C++ Avancé",
+            matiere: "C++",
+            enseignant: "Nadia Amrani",
+            classe: "3IIR"
+        }, {
+            id: 7,
+            intitule: "Réseaux LAN",
+            matiere: "Réseaux",
+            enseignant: "Othmane Rahmani",
+            classe: "3IIR"
+        }, {
+            id: 8,
+            intitule: "Réseaux WAN",
+            matiere: "Réseaux",
+            enseignant: "Othmane Rahmani",
+            classe: "3IIR"
+        }, {
+            id: 9,
+            intitule: "Linux Serveurs",
+            matiere: "Linux",
+            enseignant: "Karima Bouazza",
+            classe: "3IIR"
+        }, {
+            id: 10,
+            intitule: "Base de données",
+            matiere: "Web",
+            enseignant: "Yassine Hajji",
+            classe: "3IIR"
+        }, {
+            id: 11,
+            intitule: "Mathématiques",
+            matiere: "Math",
+            enseignant: "Mohamed El Idrissi",
+            classe: "3IIR"
+        }, {
+            id: 12,
+            intitule: "Physique",
+            matiere: "Physique",
+            enseignant: "Mohamed El Idrissi",
+            classe: "3IIR"
+        }, {
+            id: 13,
+            intitule: "Chimie",
+            matiere: "Chimie",
+            enseignant: "Karima Bouazza",
+            classe: "3IIR"
+        }, {
+            id: 14,
+            intitule: "Anglais Général",
+            matiere: "Langues",
+            enseignant: "Mohamed El Idrissi",
+            classe: "3IIR"
+        }, {
+            id: 15,
+            intitule: "Espagnol",
+            matiere: "Langues",
+            enseignant: "Mohamed El Idrissi",
+            classe: "3IIR"
+        }, {
+            id: 16,
+            intitule: "Projet Web",
+            matiere: "Web",
+            enseignant: "Yassine Hajji",
+            classe: "3IIR"
+        }, {
+            id: 17,
+            intitule: "Algorithmique",
+            matiere: "C++",
+            enseignant: "Nadia Amrani",
+            classe: "3IIR"
+        }, {
+            id: 18,
+            intitule: "Sécurité Réseau",
+            matiere: "Réseaux",
+            enseignant: "Othmane Rahmani",
+            classe: "3IIR"
+        }, {
+            id: 19,
+            intitule: "Linux Avancé",
+            matiere: "Linux",
+            enseignant: "Karima Bouazza",
+            classe: "3IIR"
+        }, {
+            id: 20,
+            intitule: "Gestion de Projet",
+            matiere: "Management",
+            enseignant: "Mohamed El Idrissi",
+       …  </script>
 </body>
 
 
 </html>
+
 
 
