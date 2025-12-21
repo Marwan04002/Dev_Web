@@ -671,11 +671,184 @@
             intitule: "Gestion de Projet",
             matiere: "Management",
             enseignant: "Mohamed El Idrissi",
-       …  </script>
+            classe: "3IIR"
+        }, {
+            id: 21,
+            intitule: "Communication",
+            matiere: "Management",
+            enseignant: "Nadia Amrani",
+            classe: "3IIR"
+        }, {
+            id: 22,
+            intitule: "Comptabilité",
+            matiere: "Finance",
+            enseignant: "Karima Bouazza",
+            classe: "3IIR"
+        }, {
+            id: 23,
+            intitule: "Marketing",
+            matiere: "Management",
+            enseignant: "Mohamed El Idrissi",
+            classe: "3IIR"
+        }, {
+            id: 24,
+            intitule: "Design UI/UX",
+            matiere: "Web",
+            enseignant: "Yassine Hajji",
+            classe: "3IIR"
+        }, {
+            id: 25,
+            intitule: "Java Avancé",
+            matiere: "Java",
+            enseignant: "Nadia Amrani",
+            classe: "3IIR"
+        }, {
+            id: 26,
+            intitule: "PHP & MySQL",
+            matiere: "Web",
+            enseignant: "Yassine Hajji",
+            classe: "3IIR"
+        }];
+
+
+        const classrooms = [{
+            id: 1,
+            nom: "Salle A101",
+            capacite: 30
+        }, {
+            id: 2,
+            nom: "Salle A102",
+            capacite: 25
+        }, {
+            id: 3,
+            nom: "Salle B201",
+            capacite: 35
+        }, {
+            id: 4,
+            nom: "Salle B202",
+            capacite: 28
+        }, {
+            id: 5,
+            nom: "Salle C301",
+            capacite: 40
+        }];
+
+        // Mapping headers
+        const studentHeaders = [{
+            label: "ID",
+            key: "id"
+        }, {
+            label: "Nom",
+            key: "nom"
+        }, {
+            label: "Prénom",
+            key: "prenom"
+        }, {
+            label: "Classe",
+            key: "classe"
+        }];
+        const teacherHeaders = [{
+            label: "ID",
+            key: "id"
+        }, {
+            label: "Nom",
+            key: "nom"
+        }, {
+            label: "Prénom",
+            key: "prenom"
+        }, {
+            label: "Matière",
+            key: "matiere"
+        }];
+        const courseHeaders = [{
+            label: "ID",
+            key: "id"
+        }, {
+            label: "Intitulé du cours",
+            key: "intitule"
+        }, {
+            label: "Matière",
+            key: "matiere"
+        }, {
+            label: "Enseignant",
+            key: "enseignant"
+        }, {
+            label: "Classe",
+            key: "classe"
+        }];
+        const classroomHeaders = [{
+            label: "ID",
+            key: "id"
+        }, {
+            label: "Nom de la salle",
+            key: "nom"
+        }, {
+            label: "Capacité",
+            key: "capacite"
+        }];
+
+
+        // Générateur de tableau
+        function generateTable(containerId, data, headers) {
+            let html = "<table><tr>";
+            headers.forEach(h => html += `<th>${h.label}</th>`);
+            html += "<th>Action</th></tr>";
+
+            data.forEach(item => {
+                html += "<tr>";
+                headers.forEach(h => html += `<td>${item[h.key]}</td>`);
+
+                // On passe directement l'objet item à showDetails
+                html += `<td><button onclick='showDetails("${containerId}", ${JSON.stringify(item)})'>Voir</button></td>`;
+                html += "</tr>";
+            });
+
+            html += "</table>";
+            document.getElementById(containerId + 'Table').innerHTML = html;
+        }
+
+        // Génération des tableaux
+        generateTable('students', students, studentHeaders);
+        generateTable('teachers', teachers, teacherHeaders);
+        generateTable('courses', courses, courseHeaders);
+        generateTable('classrooms', classrooms, classroomHeaders);
+
+        // Navigation
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function logout() {
+            window.location.href = "index.html";
+        }
+
+        let previousSection = "";
+
+        // Affichage des détails dynamiques
+        function showDetails(section, item) {
+            previousSection = section;
+            const detailsDiv = document.getElementById('details');
+
+            // Génération du contenu de détails
+            let html = `<h1>Détails</h1><ul>`;
+            for (let key in item) {
+                html += `<li><strong>${key}:</strong> ${item[key]}</li>`;
+            }
+            html += `</ul><button onclick="backToPrevious()">Retour</button>`;
+
+            detailsDiv.innerHTML = html;
+            showSection('details');
+        }
+
+        function backToPrevious() {
+            showSection(previousSection);
+        }  </script>
 </body>
 
 
 </html>
+
 
 
 
