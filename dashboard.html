@@ -272,12 +272,154 @@
         <div id="grades" class="section"></div>
         <div id="form" class="section"></div>
     </div>
+<script>
+        // ====== DATABASE & STORAGE ======
+        const DB = {
+            students: [],
+            teachers: [],
+            courses: [],
+            classrooms: [],
+            grades: []
+        };
+        let editCtx = {
+            entity: null,
+            id: null
+        };
 
-    
+        function saveDB() {
+            localStorage.setItem("schoolDB", JSON.stringify(DB));
+        }
 
+        function loadDB() {
+            const data = JSON.parse(localStorage.getItem("schoolDB"));
+            if (data) Object.assign(DB, data);
+        }
+
+        // ====== RENDER ======
+        function render(entity) {
+            const el = document.getElementById(entity);
+            const rows = DB[entity];
+            const headers = {
+                students: ["ID", "Nom", "Classe"],
+                teachers: ["ID", "Nom", "Matière"],
+                courses: ["ID", "Titre", "Professeur"],
+                classrooms: ["ID", "Salle", "Capacité"],
+                grades: ["ID", "Étudiant", "Cours", "Note"]
+            }[entity];
+            const keys = {
+                students: ["id", "name", "class"],
+                teachers: ["id", "name", "subject"],
+                courses: ["id", "title", "teacher"],
+                classrooms: ["id", "room", "capacity"],
+                grades: ["id", "student", "course", "grade"]
+            }[entity];
+            let html = `<h1>${entity.toUpperCase()}</h1><button onclick="add('${entity}')">Ajouter</button><table><tr>`;
+            headers.forEach(h => html += `<th>${h}</th>`);
+            html += `<th>Actions</th></tr>`;
+            rows.forEach(r => {
+                html += "<tr>";
+                keys.forEach(k => html += `<td>${r[k]||""}</td>`);
+                html += `<td><button onclick="edit('${entity}',${r.id})">Edit</button> <button class="delete" onclick="removeItem('${entity}',${r.id})">Delete</button></td></tr>`;
+            });
+            html += "</table>";
+            el.innerHTML = html;
+            updateCounts();
+        }
+
+        // ====== ADD ======
+        function add(entity) {
+            let obj = {
+                id: Date.now()
+            };
+            if (entity === "students") {
+                obj.name = prompt("Nom");
+                obj.class = prompt("Classe");
+            }
+            if (entity === "teachers") {
+                obj.name = prompt("Nom");
+                obj.subject = prompt("Matière");
+            }
+            if (entity === "courses") {
+                obj.title = prompt("Titre");
+                obj.teacher = prompt("Professeur");
+            }
+            if (entity === "classrooms") {
+                obj.room = prompt("Salle");
+                obj.capacity = prompt("Capacité");
+            }
+            if (entity === "grades") {
+                obj.student = prompt("Étudiant");
+                obj.course = prompt("Cours");
+                obj.grade = prompt("Note");
+            }
+            DB[entity].push(obj);
+            saveDB();
+            render(entity);
+        }
+
+        // ====== EDIT ======
+        function edit(entity, id) {
+            editCtx = {
+                entity,
+                id
+            };
+            const item = DB[entity].find(e => e.id === id);
+            let html = `<div class="form-box"><h2>Edit</h2>`;
+            Object.keys(item).forEach(k => {
+                if (k !== "id") html += `${k}<input value="${item[k]}" data-key="${k}">`
+            });
+            html += `<button onclick="saveEdit()">Save</button> <button onclick="showSection('${entity}')">Cancel</button></div>`;
+            document.getElementById("form").innerHTML = html;
+            showSection("form");
+        }
+
+        function saveEdit() {
+            const {
+                entity,
+                id
+            } = editCtx;
+            const item = DB[entity].find(e => e.id === id);
+            document.querySelectorAll("#form input").forEach(i => item[i.dataset.key] = i.value);
+            saveDB();
+            render(entity);
+            showSection(entity);
+        }
+
+        // ====== DELETE ======
+        function removeItem(entity, id) {
+            if (!confirm("Supprimer cet élément ?")) return;
+            DB[entity] = DB[entity].filter(e => e.id !== id);
+            saveDB();
+            render(entity);
+            showSection(entity);
+        }
+
+        // ====== UTIL ======
+        function updateCounts() {
+            cStudents.textContent = DB.students.length;
+            cTeachers.textContent = DB.teachers.length;
+            cCourses.textContent = DB.courses.length;
+            cClassrooms.textContent = DB.classrooms.length;
+            cGrades.textContent = DB.grades.length;
+        }
+
+        function showSection(id) {
+            document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+            document.getElementById(id).classList.add("active");
+        }
+
+        function logout() {
+            window.location.href = "index.html";
+        }
+
+        // ====== INIT ======
+        loadDB();
+        ["students", "teachers", "courses", "classrooms", "grades"].forEach(render);
+    </script>  
 </body>
 
 </html>
+
 
 
 
