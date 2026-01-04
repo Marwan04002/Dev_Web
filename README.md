@@ -71,12 +71,6 @@ Cette application est un **Backoffice simple** (front-end uniquement) pour gére
 
 Projet d'exemple éducatif - code libre d'usage pour apprentissage.
 
----
 
-Si tu veux, je peux :
-- ajouter des exemples de données de démo au chargement,
-- documenter le format exact attendu dans `localStorage`,
-- ou générer un petit script pour réinitialiser la BDD locale.
 
-Indique ce que tu souhaites que j'ajoute ensuite.
 
