@@ -2,79 +2,81 @@
 
 ## Description
 
-Cette application est un **Backoffice simple** pour gérer les entités scolaires (Étudiants, Enseignants, Cours, Salles, Notes/Examens) via un tableau de bord interactif et un système de login sécurisé avec redirection vers le dashboard.
-
-L'application est développée uniquement en **HTML5**, **CSS3** et **JavaScript natif**, sans frameworks externes.
+Cette application est un **Backoffice simple** (front-end uniquement) pour gérer des entités scolaires : Étudiants, Enseignants, Modules, Cours, Groupes et Notes. Elle fonctionne entièrement avec **HTML5**, **CSS3** et **JavaScript natif** et stocke les données côté client dans `localStorage`.
 
 ---
 
-## Structure du projet
+## Arborescence & Fichiers
 
-- `index.html` - Page de connexion (Login)
-- `dashboard.html` - Tableau de bord (Dashboard)
-- `README.md` - Documentation du projet
+- `index.html` - Page de **connexion** (Login)
+  - Formulaire simple (utilisateur `admin` / mot de passe `admin`) validé côté client.
+  - En cas de succès, redirection vers `dashboard.html`.
 
----
+- `dashboard.html` - **Tableau de bord** principal
+  - Interface avec une **sidebar** de navigation et des sections pour chaque entité.
+  - Gestion CRUD basique : **Ajouter**, **Éditer**, **Supprimer** pour chaque entité.
+  - Données persistées dans `localStorage` sous la clé `schoolDB`.
+  - Entités gérées et champs (exemples) :
+    - `students` : `id, nom, prenom, groupe, birth, mat`
+    - `teachers` : `id, nom, prenom, mat`
+    - `modules` : `id, name, prof`
+    - `courses` : `id, titre, prof, module`
+    - `groups` : `id, name, capacity`
+    - `grades` : `id, groupe, etudiant, note`
 
-## Login Page
+- `README.md` - Documentation (ce fichier)
 
-### Fonctionnalités
-
-- Formulaire avec nom d'utilisateur et mot de passe
-- Vérification côté client : seul l'utilisateur `admin / admin` est accepté
-- Redirection vers le dashboard en cas de succès
-- Message d'alerte en cas d'identifiants incorrects
-
-### Design
-
-- Carte centrée sur l'écran
-- Gradient en background
-- Inputs arrondis avec effet focus
-- Bouton de connexion avec animation au survol
+> Remarque : Le projet est volontairement minimal et ne contient pas de back-end. Ouvrir `index.html` dans un navigateur suffit pour l'utiliser.
 
 ---
 
-## Dashboard
+## Fonctionnalités détaillées
 
-### Fonctionnalités principales
+- Authentification :
+  - Contrôle simple côté client pour la démo (`admin/admin`).
 
-#### Dashboard (Accueil)
+- Dashboard & Navigation :
+  - Sidebar fixe pour accéder aux sections : Étudiants, Professeurs, Modules, Cours, Groupes, Notes.
+  - Vue table listant les enregistrements pour chaque entité avec actions `Edit` / `Delete`.
 
-- Affichage de cartes statistiques : nombre d'étudiants, enseignants, cours, salles
+- Formulaires :
+  - Formulaire d'ajout et d'édition réutilisable.
+  - Sélections dépendantes (ex. sélectionner un groupe filtre les étudiants pour les notes).
 
-#### Gestion des entités
-
-- **Étudiants** : liste avec ID, nom, prénom, classe, bouton "Voir"
-- **Enseignants** : liste avec ID, nom, prénom, matière, bouton "Voir"
-- **Cours** : liste des cours avec ID, intitulé, matière, enseignant, classe
-- **Salles** : liste des salles avec ID, nom et capacité
-- **Notes / Examens** : section pour la gestion future
-
-#### Détails
-
-- Affichage d'un rapport détaillé pour chaque entité sélectionnée
-
-#### Déconnexion
-
-- Bouton pour terminer la session et revenir à la page de login
-
-### Design
-
-- Sidebar fixe avec menu de navigation
-- Contenu responsive
-- Cartes statistiques avec ombre et arrondi
-- Tables stylisées avec couleur et boutons interactifs
+- Stockage :
+  - Toutes les données sont stockées dans `localStorage` sous la clé `schoolDB` au format JSON.
+  - Utilisez l'inspecteur du navigateur pour visualiser ou supprimer la clé si besoin (réinitialiser les données).
 
 ---
 
-## Fonctionnement
+## Utilisation
 
-1. Ouvrir la page de login dans un navigateur
-2. Saisir le login :
-   - **Nom d'utilisateur** : `admin`
-   - **Mot de passe** : `admin`
-3. Cliquer sur **Login** → redirection vers le dashboard
-4. Naviguer entre les sections via le menu à gauche
-5. Cliquer sur **Déconnexion** pour retourner à la page de login
+1. Ouvrir `index.html` dans un navigateur moderne.
+2. Se connecter avec : `admin` / `admin`.
+3. Ajouter, éditer ou supprimer des enregistrements via le dashboard.
+4. Les changements sont automatiquement sauvegardés dans `localStorage`.
 
+---
+
+## Pour aller plus loin
+
+- Ajouter une API back-end pour persister les données côté serveur (ex : Node.js + Express).
+- Valider et filtrer les champs côté client (ex : validation de note, capacité numérique positive).
+- Ajouter recherches, filtres et pagination pour les tables.
+- Export / import JSON pour sauvegarder ou restaurer des jeux de données.
+
+---
+
+## Licence & Crédit
+
+Projet d'exemple éducatif - code libre d'usage pour apprentissage.
+
+---
+
+Si tu veux, je peux :
+- ajouter des exemples de données de démo au chargement,
+- documenter le format exact attendu dans `localStorage`,
+- ou générer un petit script pour réinitialiser la BDD locale.
+
+Indique ce que tu souhaites que j'ajoute ensuite.
 
