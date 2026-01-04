@@ -34,8 +34,308 @@
         <div id="form" class="section"></div>
     </div>
 
-    
+    <script>
+        // ================== DATABASE ==================
+        const DB = {
+            students: [],
+            teachers: [],
+            modules: [],
+            courses: [],
+            groups: [],
+            grades: []
+        };
+        let editCtx = {
+            entity: null,
+            id: null
+        };
+
+        // maps for columns and headers
+        const fieldsMap = {
+            students: ["nom", "prenom", "groupe", "birth", "mat"],
+            teachers: ["nom", "prenom", "mat"],
+            modules: ["name", "prof"],
+            courses: ["titre", "prof", "module"],
+            groups: ["name", "capacity"],
+            grades: ["groupe", "etudiant", "note"]
+        };
+        const headersMap = {
+            students: ["Nom", "Prénom", "Groupe", "Naissance", "Matricule"],
+            teachers: ["Nom", "Prénom", "Matricule"],
+            modules: ["Nom Module", "Professeur"],
+            courses: ["Titre", "Professeur", "Module"],
+            groups: ["Nom Groupe", "Capacité"],
+            grades: ["Groupe", "Étudiant", "Note"]
+        };
+
+        // ================== STORAGE ==================
+        function saveDB() {
+            localStorage.setItem("schoolDB", JSON.stringify(DB));
+        }
+
+        function loadDB() {
+            const d = JSON.parse(localStorage.getItem("schoolDB"));
+            if (d) {
+                // ensure arrays exist and assign
+                Object.keys(DB).forEach(k => DB[k] = Array.isArray(d[k]) ? d[k] : DB[k]);
+            }
+        }
+
+        // ================== RENDER ==================
+        function render(entity) {
+            const el = document.getElementById(entity);
+            const headers = headersMap[entity] || [];
+            const fields = fieldsMap[entity] || [];
+
+            let html = `<h1>${entity.toUpperCase()}</h1>
+<button onclick="add('${entity}')">Ajouter</button>
+<table><tr>`;
+
+            headers.forEach(h => html += `<th>${h}</th>`);
+            html += `<th>Actions</th></tr>`;
+
+            DB[entity].forEach(r => {
+                html += "<tr>";
+                fields.forEach(f => html += `<td>${r[f] !== undefined ? r[f] : ""}</td>`);
+                html += `<td>
+<button onclick="edit('${entity}', ${r.id})">Edit</button>
+<button class="delete" onclick="removeItem('${entity}', ${r.id})">Delete</button>
+</td></tr>`;
+            });
+
+            html += "</table>";
+            el.innerHTML = html;
+        }
+
+        // helpers for option lists
+        function optionsFromGroups(selected) {
+            return DB.groups.map(g => `<option value="${g.name}" ${g.name === selected ? "selected" : ""}>${g.name}</option>`).join("");
+        }
+
+        function optionsFromTeachers(selected) {
+            return DB.teachers.map(t => {
+                const label = `${t.nom} ${t.prenom}`;
+                return `<option value="${label}" ${label === selected ? "selected" : ""}>${label}</option>`;
+            }).join("");
+        }
+
+        function optionsFromStudents(selected) {
+            return DB.students.map(s => {
+                const label = `${s.nom} ${s.prenom}`;
+                return `<option value="${label}" ${label === selected ? "selected" : ""}>${label}</option>`;
+            }).join("");
+        }
+
+        function optionsFromModules(selected) {
+            return DB.modules.map(m => `<option value="${m.name}" ${m.name === selected ? "selected" : ""}>${m.name}</option>`).join("");
+        }
+
+        // ================== ADD FORM ==================
+        function add(entity) {
+            const formEl = document.getElementById("form");
+            let html = `<div class="form-box"><h2>Ajouter</h2>`;
+
+            if (entity === "students") {
+                html += `
+<input placeholder="Nom" id="nom">
+<input placeholder="Prénom" id="prenom">
+<select id="groupe"><option value="">-- Sélectionner groupe --</option>${optionsFromGroups()}</select>
+<input type="date" id="birth">
+<input placeholder="Matricule" id="mat">`;
+            }
+
+            if (entity === "teachers") {
+                html += `
+<input placeholder="Nom" id="nom">
+<input placeholder="Prénom" id="prenom">
+<input placeholder="Matricule" id="mat">`;
+            }
+
+            if (entity === "modules") {
+                html += `
+<input placeholder="Nom du module" id="name">
+<select id="prof"><option value="">-- Sélectionner professeur --</option>${optionsFromTeachers()}</select>`;
+            }
+
+            if (entity === "courses") {
+                html += `
+<input placeholder="Titre" id="titre">
+<select id="prof"><option value="">-- Sélectionner professeur --</option>${optionsFromTeachers()}</select>
+<select id="module"><option value="">-- Sélectionner module --</option>${optionsFromModules()}</select>`;
+            }
+
+            if (entity === "groups") {
+                html += `
+<input placeholder="Nom du groupe" id="nom">
+<input placeholder="Capacité" id="cap" type="number">`;
+            }
+
+            if (entity === "grades") {
+                html += `
+<select id="grp" onchange="loadStudents(this.value)">
+<option value="">-- Sélectionner groupe --</option>
+${optionsFromGroups()}
+</select>
+<select id="etud"><option value="">-- Sélectionner étudiant --</option></select>
+<input placeholder="Note" id="note">`;
+            }
+
+            html += `
+<button onclick="saveAdd('${entity}')">Save</button>
+<button onclick="showSection('${entity}')">Cancel</button>
+</div>`;
+
+            formEl.innerHTML = html;
+            showSection("form");
+        }
+
+        // ================== SAVE ADD ==================
+        function saveAdd(entity) {
+            const o = {
+                id: Date.now()
+            };
+
+            if (entity === "students") {
+                o.nom = (document.getElementById("nom") || {}).value || "";
+                o.prenom = (document.getElementById("prenom") || {}).value || "";
+                o.groupe = (document.getElementById("groupe") || {}).value || "";
+                o.birth = (document.getElementById("birth") || {}).value || "";
+                o.mat = (document.getElementById("mat") || {}).value || "";
+            }
+
+            if (entity === "teachers") {
+                o.nom = (document.getElementById("nom") || {}).value || "";
+                o.prenom = (document.getElementById("prenom") || {}).value || "";
+                o.mat = (document.getElementById("mat") || {}).value || "";
+            }
+
+            if (entity === "modules") {
+                o.name = (document.getElementById("name") || {}).value || "";
+                o.prof = (document.getElementById("prof") || {}).value || "";
+            }
+
+            if (entity === "courses") {
+                o.titre = (document.getElementById("titre") || {}).value || "";
+                o.prof = (document.getElementById("prof") || {}).value || "";
+                o.module = (document.getElementById("module") || {}).value || "";
+            }
+
+            if (entity === "groups") {
+                o.name = (document.getElementById("nom") || {}).value || "";
+                o.capacity = (document.getElementById("cap") || {}).value || "";
+            }
+
+            if (entity === "grades") {
+                o.groupe = (document.getElementById("grp") || {}).value || "";
+                o.etudiant = (document.getElementById("etud") || {}).value || "";
+                o.note = (document.getElementById("note") || {}).value || "";
+            }
+
+            DB[entity].push(o);
+            saveDB();
+            render(entity);
+            showSection(entity);
+        }
+
+        // ================== EDIT ==================
+        function edit(entity, id) {
+            editCtx = {
+                entity,
+                id
+            };
+            const item = DB[entity].find(e => e.id === id);
+            if (!item) return alert("Élément introuvable");
+
+            const formEl = document.getElementById("form");
+            let html = `<div class="form-box"><h2>Edit</h2>`;
+
+            const fields = fieldsMap[entity] || [];
+            fields.forEach(f => {
+                // special controls
+                if ((entity === "students" && f === "groupe")) {
+                    html += `<select data-key="${f}" id="edit-${f}"><option value="">-- Sélectionner groupe --</option>${optionsFromGroups(item[f])}</select>`;
+                } else if ((entity === "courses" && f === "prof")) {
+                    html += `<select data-key="${f}" id="edit-${f}"><option value="">-- Sélectionner professeur --</option>${optionsFromTeachers(item[f])}</select>`;
+                } else if ((entity === "courses" && f === "module")) {
+                    html += `<select data-key="${f}" id="edit-${f}"><option value="">-- Sélectionner module --</option>${optionsFromModules(item[f])}</select>`;
+                } else if ((entity === "modules" && f === "prof")) {
+                    html += `<select data-key="${f}" id="edit-${f}"><option value="">-- Sélectionner professeur --</option>${optionsFromTeachers(item[f])}</select>`;
+                } else if ((entity === "grades" && f === "groupe")) {
+                    html += `<select data-key="${f}" id="edit-${f}" onchange="loadStudentsForEdit(this.value)"><option value="">-- Sélectionner groupe --</option>${optionsFromGroups(item[f])}</select>`;
+                } else if ((entity === "grades" && f === "etudiant")) {
+                    html += `<select data-key="${f}" id="edit-${f}">${optionsFromStudents(item[f])}</select>`;
+                } else {
+                    const type = f === "birth" ? "date" : (f === "capacity" ? "number" : "text");
+                    html += `<input data-key="${f}" id="edit-${f}" type="${type}" value="${item[f] !== undefined ? item[f] : ""}">`;
+                }
+            });
+
+            html += `
+<button onclick="saveEdit()">Save</button>
+<button onclick="showSection('${entity}')">Cancel</button>
+</div>`;
+
+            formEl.innerHTML = html;
+            showSection("form");
+        }
+
+        function loadStudentsForEdit(groupName) {
+            const sel = document.getElementById("edit-etudiant");
+            if (!sel) return;
+            sel.innerHTML = `<option value="">-- Sélectionner étudiant --</option>` +
+                DB.students.filter(s => s.groupe === groupName)
+                .map(s => `<option value="${s.nom} ${s.prenom}">${s.nom} ${s.prenom}</option>`).join("");
+        }
+
+        function saveEdit() {
+            const {
+                entity,
+                id
+            } = editCtx;
+            const item = DB[entity].find(e => e.id === id);
+            if (!item) return;
+            document.querySelectorAll("#form [data-key]").forEach(i => {
+                item[i.dataset.key] = i.value;
+            });
+            saveDB();
+            render(entity);
+            showSection(entity);
+        }
+
+        // ================== DELETE ==================
+        function removeItem(entity, id) {
+            if (!confirm("Supprimer ?")) return;
+            DB[entity] = DB[entity].filter(e => e.id !== id);
+            saveDB();
+            render(entity);
+        }
+
+        // ================== UTILS ==================
+        function loadStudents(g) {
+            const etud = document.getElementById("etud");
+            if (!etud) return;
+            etud.innerHTML = `<option value="">-- Sélectionner étudiant --</option>` +
+                DB.students.filter(s => s.groupe === g)
+                .map(s => `<option value="${s.nom} ${s.prenom}">${s.nom} ${s.prenom}</option>`).join("");
+        }
+
+        function showSection(id) {
+            document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+            const el = document.getElementById(id);
+            if (el) el.classList.add("active");
+        }
+
+        function logout() {
+            location.href = "index.html";
+        }
+
+        // ================== INIT ==================
+        loadDB();
+        ["students", "teachers", "modules", "courses", "groups", "grades"].forEach(render);
+        // show first section by default
+        showSection("students");
+    </script>
 
 </body>
 
 </html>
+
